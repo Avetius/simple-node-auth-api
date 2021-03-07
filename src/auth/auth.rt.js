@@ -9,7 +9,7 @@ import User from './auth.ctl';
 const router = express.Router();
 
 export default router
-  .post('/login', validate(login, 'body'), User.login)
+  .post('/login', validate(login, 'body'), pass.authenticate('local', { session: false }), User.login2)
   .post('/signup', validate(signup, 'body'), User.signup)
   .get('/verify_email/:token', validate(recoverPassword, 'params'), User.verify_email)
   .post('/recoverPassword/:token', validate(recoverPassword, 'params'), User.recoverPassword)

@@ -59,8 +59,8 @@ class ExpressApp {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(morgan('combined'));
-    this.app.use(passport.initialize());
     this.app.use(methodOverride());
+    this.app.use(passport.initialize());
   }
 
   routesConfig() {

@@ -44,6 +44,10 @@ export default class UserController {
     }
   }
 
+  static login2(req, res) {
+    return response(res, req.user);
+  }
+
   static async signup(req, res, next) {
     try {
       const {
