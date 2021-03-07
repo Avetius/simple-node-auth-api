@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "required": [
+    "email", "login", "password", "contact_name", "contact_surname"
+  ],
+  "properties": {
+    "email": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 50,
+      "format": "email"
+    },
+    "login": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 50
+    },
+    "password": {
+      "type": "string",
+      "minLength": 7,
+      "maxLength": 50,
+      "pattern": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{7,}$",
+      "message": "password must contain at least 1 uppercase 1 lowercase 1 number and 1 special char '#?!@$%^&*-'"
+    },
+    "contact_name": {"type": "string" },
+    "contact_surname": {"type": "string" },
+    "company_name": {"type": "string" },
+    "company_address": {"type": "string" },
+    "accelerator_program_id": {"type": "integer" }
+  }
+}

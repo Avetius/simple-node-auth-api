@@ -1,0 +1,9 @@
+export { default as signup } from './signup.json';
+export { default as login } from './login.json';
+export { default as changePassword } from './changePassword.json';
+export { default as forgotPassword } from './forgotPassword.json';
+export { default as recoverPassword } from './recoverPassword.json';
+export { default as blockUser } from './blockUser.json';
+export { default as list } from './list.json';
+export { default as update_body } from './update_body.json';
+export { default as params_id } from './params_id.json';

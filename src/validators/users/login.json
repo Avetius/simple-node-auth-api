@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "required": [
+    "login", "password"
+  ],
+  "properties": {
+    "login": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 50
+    },
+    "password": {
+      "type": "string",
+      "minLength": 7,
+      "maxLength": 50,
+      "pattern": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{7,}$"
+    }
+  }
+}

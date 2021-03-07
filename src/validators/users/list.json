@@ -1,0 +1,46 @@
+{
+  "type": "object",
+  "required": [],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9]*$"
+    },
+    "company_name": {
+      "type": "string"
+    },
+    "company_type": {
+      "type": "string"
+    },
+    "company_address": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string",
+      "pattern": "[0-9]+"
+    },
+    "role": {
+      "type": "string",
+      "enum": ["superadmin", "admin", "mentor", "expert", "startup", "immuser"]
+    },
+    "login": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 50
+    },
+    "email": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 50
+    },
+    "contact_name": {
+      "type": "string"
+    },
+    "contact_surname": {
+      "type": "string"
+    },
+    "accelerator_program": {
+      "type": "string",
+      "pattern": "^[0-9]*$"    }
+  }
+}
