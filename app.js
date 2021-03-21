@@ -12,7 +12,7 @@ import methodOverride from 'method-override';
 import { error404, error500 } from './src/utilities';
 
 import * as passportAuth from './src/middlewares/authentication';
-import userRoutes from './src/auth/auth.rt';
+import userRoutes from './src/user/user.rt';
 
 const { pass: passport } = passportAuth;
 

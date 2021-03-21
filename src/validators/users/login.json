@@ -1,7 +1,8 @@
 {
   "type": "object",
   "required": [
-    "login", "password"
+    "login",
+    "password"
   ],
   "properties": {
     "login": {

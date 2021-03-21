@@ -15,8 +15,8 @@ export function responsWithError(displayError, req, res, error = {}) {
     const userEmail = user ? user.email : undefined;
     const err = error ? error : displayError;
     const report = `
-      code >>> ${err.code}
-      message >>> ${err.message}
+      code >>> ${err.code || displayError.code}
+      message >>> ${err.message || displayError.message}
       user >>>  ${userEmail}
       method >>>  ${method}
       url >>>  ${originalUrl}

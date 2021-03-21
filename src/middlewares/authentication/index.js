@@ -1,13 +1,13 @@
 import passport from 'passport';
 import jwt from './strategies/jwt';
 import local from './strategies/local';
-// import facebook from './strategies/facebook';
+import facebook from './strategies/facebook';
 // import google from './strategies/google';
 
 passport.use('jwt', jwt);
 passport.use('local', local);
+passport.use('facebook', facebook);
 // passport.use('google', google);
-// passport.use('facebook', facebook);
 
 // middleware for doing role-based permissions
 export function permit(...allowed) {

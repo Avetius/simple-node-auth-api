@@ -4,7 +4,7 @@ require('dotenv').config();
 module.exports = {
 
   development: {
-    client: 'postgresql',
+    client: process.env.DB_type,
     connection: {
       host: process.env.DB_host,
       database: process.env.DB_name,
@@ -21,7 +21,7 @@ module.exports = {
   },
 
   staging: {
-    client: 'postgresql',
+    client: process.env.DB_type,
     connection: {
       host: process.env.DB_host,
       database: process.env.DB_name,
@@ -38,7 +38,7 @@ module.exports = {
   },
 
   production: {
-    client: 'postgresql',
+    client: process.env.DB_type,
     connection: {
       host: process.env.DB_host,
       database: process.env.DB_name,

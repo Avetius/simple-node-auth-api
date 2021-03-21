@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import Strategy from 'passport-local';
 import bcrypt from 'bcrypt';
-import { Users } from '../../../auth/auth.mdl';
+import { Login } from '../../../user/login.mdl';
 import knex from '../../../base';
 
 const secret = process.env.SECRET;
@@ -19,26 +19,49 @@ export default new Strategy({
   session: false,
 },
 async (login, password, done) => { // callback with email and password from our form
-  const [user] = await Users.query().select('*').limit(1) // .withGraphFetched('profile')
+  const [userLogin] = await Login.query().select('*')
+    .withGraphFetched('user')
+    .modifyGraph('user', (builder) => {
+      builder
+        .select('id', 'role', 'blocked', 'block_reason', 'avatar', 'background', 'created_at', 'updated_at', 'deleted_at')
+        .orderBy('id')
+        .withGraphFetched('login', (loginBuilder) => {
+          loginBuilder.select('email', 'login', 'verified_email');
+        })
+        .withGraphFetched('phones', (phoneBuilder) => {
+          phoneBuilder.select('country_code', 'number', 'verified_phone');
+        })
+        .withGraphFetched('client_profile', (clientBuilder) => {
+          clientBuilder.select('firstname', 'lastname', 'prefix', 'dob', 'avatar', 'background');
+        })
+        .withGraphFetched('partner_profile', (partnerBuilder) => {
+          partnerBuilder.select('companyname', 'address1', 'address2', 'phone', 'logo', 'background');
+        })
+        .withGraphFetched('social_networks', (loginBuilder) => {
+          loginBuilder.select('provider', 'provider_id', 'profile_url', 'display_name', 'gender', 'emails', 'photos', 'family_name', 'given_name', 'middle_name');
+        });
+    })
     .where(knex.raw(`LOWER("email") = '${login.toLowerCase()}'`))
     .orWhere(knex.raw(`LOWER("login") = '${login.toLowerCase()}'`))
+    .limit(1)
     .catch((e) => { done(e, null); });
 
-  if (user) {
-    if (user.blocked) {
+  console.log('userLogin > ', userLogin);
+  if (userLogin) {
+    if (userLogin.user.blocked) {
       const error = { code: 400, message: 'user blocked' };
       return done(error, null);
     }
-    if (!user.verified_email) {
+    if (!userLogin.verified_email) {
       const error = { code: 400, message: 'please verify your email' };
       return done(error, null);
     }
-    const samePassword = await bcrypt.compare(password, user.password)
+    const samePassword = await bcrypt.compare(password, userLogin.password)
       .catch((bcryptError) => done(bcryptError, null));
     if (samePassword) {
-      const result = Object.assign(user, {
+      const result = Object.assign(userLogin.user, {
         token: jwt.sign({
-          id: user.id,
+          id: userLogin.user.id,
         }, secret, { expiresIn: 60 * 60 }), // 60 * 60
       });
       delete result.password;
