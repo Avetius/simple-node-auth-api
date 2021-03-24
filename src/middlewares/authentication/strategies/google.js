@@ -7,6 +7,7 @@ export default new GoogleStrategy({
   callbackURL: process.env.GOOGLE_CALLBACKURL,
 },
 async (token, refreshToken, profile, done) => {
+  // todo add google
   console.log('GOOGLE');
   console.log('profile > ', profile);
   console.log('refreshToken > ', refreshToken);

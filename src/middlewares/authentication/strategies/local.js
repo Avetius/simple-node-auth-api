@@ -20,27 +20,7 @@ export default new Strategy({
 },
 async (login, password, done) => { // callback with email and password from our form
   const [userLogin] = await Login.query().select('*')
-    .withGraphFetched('user')
-    .modifyGraph('user', (builder) => {
-      builder
-        .select('id', 'role', 'blocked', 'block_reason', 'avatar', 'background', 'created_at', 'updated_at', 'deleted_at')
-        .orderBy('id')
-        .withGraphFetched('login', (loginBuilder) => {
-          loginBuilder.select('email', 'login', 'verified_email');
-        })
-        .withGraphFetched('phones', (phoneBuilder) => {
-          phoneBuilder.select('country_code', 'number', 'verified_phone');
-        })
-        .withGraphFetched('client_profile', (clientBuilder) => {
-          clientBuilder.select('firstname', 'lastname', 'prefix', 'dob', 'avatar', 'background');
-        })
-        .withGraphFetched('partner_profile', (partnerBuilder) => {
-          partnerBuilder.select('companyname', 'address1', 'address2', 'phone', 'logo', 'background');
-        })
-        .withGraphFetched('social_networks', (loginBuilder) => {
-          loginBuilder.select('provider', 'provider_id', 'profile_url', 'display_name', 'gender', 'emails', 'photos', 'family_name', 'given_name', 'middle_name');
-        });
-    })
+    .withGraphFetched('user(defaultSelects)')
     .where(knex.raw(`LOWER("email") = '${login.toLowerCase()}'`))
     .orWhere(knex.raw(`LOWER("login") = '${login.toLowerCase()}'`))
     .limit(1)
@@ -59,12 +39,13 @@ async (login, password, done) => { // callback with email and password from our 
     const samePassword = await bcrypt.compare(password, userLogin.password)
       .catch((bcryptError) => done(bcryptError, null));
     if (samePassword) {
+      delete userLogin.user.login.password;
+      delete userLogin.user.login.email_verification_token;
       const result = Object.assign(userLogin.user, {
         token: jwt.sign({
           id: userLogin.user.id,
         }, secret, { expiresIn: 60 * 60 }), // 60 * 60
       });
-      delete result.password;
       return done(null, result);
     }
     const error = { code: 400, message: 'wrong credentials' };
