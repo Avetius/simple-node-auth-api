@@ -222,26 +222,13 @@ export default class UserController {
     }
   }
 
-  static async blockUser(req, res) {
+  static async block(req, res) {
     try {
       const { user_id } = req.body;
       const user = await User.query()
         .patch({ blocked: 'true' })
         .where({ id: user_id })
         .whereNot({ role: 'superadmin' });
-
-      return response(res, user);
-    } catch (e) {
-      return responsWithError(serverError, req, res, e);
-    }
-  }
-
-  static async blockAdmin(req, res) {
-    try {
-      const { user_id } = req.body;
-      const user = await User.query()
-        .patch({ blocked: 'true' })
-        .where({ id: user_id, role: 'admin' });
 
       return response(res, user);
     } catch (e) {

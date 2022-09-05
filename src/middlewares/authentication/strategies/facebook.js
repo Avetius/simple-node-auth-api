@@ -14,6 +14,10 @@ export default new FacebookStrategy({
 
 // facebook will send back the token and profile
 async (token, refreshToken, profile, done) => {
+  console.log('profile > ', profile);
+  console.log('token > ', token);
+  console.log('refreshToken > ', refreshToken);
+  // if (profile) return done('no profile id', false);
   const [sn_acc] = await SocialNetworkAccount.query()
     .withGraphFetched('user(authSelects)')
     .select(sn_display_fields)
