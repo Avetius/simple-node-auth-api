@@ -1,0 +1,32 @@
+FROM node:14
+
+ENV NODE_ENV=production
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
+
+RUN npm install --production
+# If you are building your code for production
+# RUN npm ci --only=production
+
+# Bundle app source
+COPY . .
+EXPOSE 3000
+CMD [ "babel-node", "app.js" ]
+
+FROM node:14
+RUN mkdir -p /opt/app
+WORKDIR /opt/app
+RUN adduser -S app
+COPY addressbook/ .
+RUN npm install
+RUN npm install --save pm2
+RUN chown -R app /opt/app
+USER app
+EXPOSE 3000
+CMD [ "npm", "run", "pm2" ]
