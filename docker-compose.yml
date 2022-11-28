@@ -10,20 +10,46 @@ services:
     ports: 
       - '5432:5432'
     volumes:
-      - addressbook-db:/var/lib/postgresql/data
+      - simple-node-auth-api-db:/var/lib/postgresql/data
 
-  addressbook:
+  simple-node-auth-api:
     build:
       context: .
     environment:
-      DB_SCHEMA: postgres
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_HOST: postgres
+      NODE_ENV: production
+      SUB_DOMAIN_NAME: client
+      DOMAIN_NAME: localhost
+      UPLOADED_FILES: /files
+      UPLOADED_FILES_FOLDER: uploaded_files
+      UPLOADED_PHOTOS: /avatar
+      UPLOADED_PHOTOS_FOLDER: uploaded_avatars
+      HOST: localhost
+      PORT: 3000
+      API_VERSION: /api/v1
+      SECRET: nikolBoziTxa2021
+      EMAIL: avet.sargsyan@yahoo.com
+      EMAIL_PASS: sjodiijajlssxbkf
+      DB_type: postgresql
+      DB_name: taxul
+      DB_user: taxulapi
+      DB_pass: 456
+      DB_host: taxul-postgres
+      DB_port: 9876
+      # GOOGLE_CLIENTID: 611015742909469
+      # GOOGLE_CLIENTSECRET: 757**********************bed
+      # GOOGLE_CALLBACKURL: http://localhost:8000/auth/facebook/callback
+      # FB_CLIENT_ID: 2081505128657810
+      # FB_CLIENT_SECRET: 0d71df36e1a20252c8005d77d2483f98
+      # FB_CALLBACK_URL: http://localhost:8080/api/v1/users/auth/facebook/callback
+      # BUCKET_NAME: imm-tmp
+      SLACK_WEBHOOK: https://hooks.slack.com/services/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
+      SLACK_CHANNEL: taxul
     depends_on:
       - postgres
     ports:
       - '3000:3000'
-        
+    volumes:
+      - simple-node-auth-api-db:/var/lib/postgresql/data
+
 volumes:
-  addressbook-db:
+  simple-node-auth-api-db:

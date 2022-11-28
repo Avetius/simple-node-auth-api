@@ -1,32 +1,29 @@
+# pull the Node.js Docker image
 FROM node:14
 
-ENV NODE_ENV=production
-
-# Create app directory
+# create the directory inside the container
 WORKDIR /usr/src/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
-
-RUN npm install --production
-# If you are building your code for production
-# RUN npm ci --only=production
-
-# Bundle app source
 COPY . .
-EXPOSE 3000
-CMD [ "babel-node", "app.js" ]
+# copy the package.json files from local machine to the workdir in container
+# COPY package*.json ./
+# COPY yarn.lock ./
 
-FROM node:14
-RUN mkdir -p /opt/app
-WORKDIR /opt/app
-RUN adduser -S app
-COPY addressbook/ .
-RUN npm install
-RUN npm install --save pm2
-RUN chown -R app /opt/app
-USER app
+# run npm install in our local machine
+RUN npm install yarn
+RUN yarn
+RUN yarn build
+RUN ls
+# copy the generated modules, build folder and server.js file to the container
+COPY ./build ./build
+# COPY ./migrations ./migrations
+# COPY ./seeds ./seeds
+# COPY knexfile.js .
+
+# our app is running on port 9000 within the container, so need to expose it
 EXPOSE 3000
-CMD [ "npm", "run", "pm2" ]
+
+# the command that starts our app
+# CMD ["node", "index.js"]
+# 
+CMD [ "yarn", "production" ]
