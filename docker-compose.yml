@@ -2,11 +2,14 @@
 
 version: "3.9"
 services:
-  postgres:
+  auth-db:
+    container_name: auth-db
     image: postgres
+    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: simple_auth
     ports: 
       - '5432:5432'
     volumes:
@@ -14,7 +17,10 @@ services:
 
   simple-node-auth-api:
     build:
-      context: .
+      context: ./api
+    restart: always
+    depends_on:
+      - auth-db
     environment:
       NODE_ENV: production
       SUB_DOMAIN_NAME: client
@@ -30,9 +36,9 @@ services:
       EMAIL: avet.sargsyan@yahoo.com
       EMAIL_PASS: sjodiijajlssxbkf
       DB_type: postgresql
-      DB_name: taxul
-      DB_user: taxulapi
-      DB_pass: 456
+      DB_name: simple_auth
+      DB_user: postgres
+      DB_pass: postgres
       DB_host: taxul-postgres
       DB_port: 9876
       # GOOGLE_CLIENTID: 611015742909469
@@ -44,12 +50,10 @@ services:
       # BUCKET_NAME: imm-tmp
       SLACK_WEBHOOK: https://hooks.slack.com/services/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
       SLACK_CHANNEL: taxul
-    depends_on:
-      - postgres
     ports:
       - '3000:3000'
-    volumes:
-      - simple-node-auth-api-db:/var/lib/postgresql/data
+    # volumes:
+    #   - simple-node-auth-api-db:/var/lib/postgresql/data
 
 volumes:
   simple-node-auth-api-db:

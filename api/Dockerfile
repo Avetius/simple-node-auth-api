@@ -3,6 +3,7 @@ FROM node:14
 
 # create the directory inside the container
 WORKDIR /usr/src/app
+RUN ls
 
 COPY . .
 # copy the package.json files from local machine to the workdir in container
@@ -13,7 +14,6 @@ COPY . .
 RUN npm install yarn
 RUN yarn
 RUN yarn build
-RUN ls
 # copy the generated modules, build folder and server.js file to the container
 COPY ./build ./build
 # COPY ./migrations ./migrations
