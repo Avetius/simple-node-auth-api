@@ -1,6 +1,6 @@
 module.exports = {
   apps: [{
-    name: 'taxul_client',
+    name: 'auth-api',
     script: './build/server.js',
     source_map_support: true,
     error_file: './build/err.log',

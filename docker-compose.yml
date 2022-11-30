@@ -7,20 +7,32 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: sirius
+      POSTGRES_PASSWORD: postgres123
       POSTGRES_DB: simple_auth
     ports: 
       - '5432:5432'
     volumes:
-      - simple-node-auth-api-db:/var/lib/postgresql/data
+      - ./simple-node-auth-api-db:/var/lib/postgresql/data
+
+  migration-script:
+    build:
+      context: ./migration
+    depends_on:
+      - auth-db
+    environment:
+      DB_type: pg
+      DB_name: simple_auth
+      DB_user: sirius
+      DB_pass: postgres123
+      DB_host: auth-db
 
   simple-node-auth-api:
     build:
       context: ./api
     restart: always
     depends_on:
-      - auth-db
+      - migration-script
     environment:
       NODE_ENV: production
       SUB_DOMAIN_NAME: client
@@ -35,12 +47,12 @@ services:
       SECRET: nikolBoziTxa2021
       EMAIL: avet.sargsyan@yahoo.com
       EMAIL_PASS: sjodiijajlssxbkf
-      DB_type: postgresql
+      DB_type: pg
       DB_name: simple_auth
-      DB_user: postgres
-      DB_pass: postgres
-      DB_host: taxul-postgres
-      DB_port: 9876
+      DB_user: sirius
+      DB_pass: postgres123
+      DB_host: auth-db
+      DB_port: 5432
       # GOOGLE_CLIENTID: 611015742909469
       # GOOGLE_CLIENTSECRET: 757**********************bed
       # GOOGLE_CALLBACKURL: http://localhost:8000/auth/facebook/callback
@@ -54,6 +66,5 @@ services:
       - '3000:3000'
     # volumes:
     #   - simple-node-auth-api-db:/var/lib/postgresql/data
-
-volumes:
-  simple-node-auth-api-db:
+# volumes:
+#   simple-node-auth-api-db:

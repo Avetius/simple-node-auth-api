@@ -17,7 +17,6 @@
     "pm2-del": "pm2 delete all",
     "setup": "yarn && knex migrate:rollback --all --env development && knex migrate:latest --env development && knex seed:run",
     "migrate": "knex migrate:latest --env development",
-    "migrate-build": "knex migrate:latest --knexfile ./build/knexfile.js --env development",
     "migrate-rollback": "knex migrate:rollback --all --env development",
     "migrate-up_dev": "knex migrate:up --env development",
     "migrate-down_dev": "knex migrate:down --env development",

@@ -1,0 +1,16 @@
+{
+  "name": "migration",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "knex migrate:latest --env production && node index.js"
+  },
+  "author": "Avetius",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "knex": "^2.3.0",
+    "objection": "^3.0.1",
+    "pg": "^8.8.0"
+  }
+}
