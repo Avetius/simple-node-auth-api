@@ -12,7 +12,7 @@ const kn = require('knex')({
 });
 
 kn.raw(`CREATE DATABASE ${process.env.DB_name}`)
-  .then(console.log('>>>>>>>>>>>>>>>>>>>>DATABASE CREATED<<<<<<<<<<<<<<<<<<<<'))
-  .catch(console.log('>>>>>>>>>>>>>>>>>>>>FAILED TO CREATE DATABASE<<<<<<<<<<<<<<<<<<<<'));
+  .then((db) => console.log(`>>>>>>>>>>>>>>>>>>>>DATABASE CREATED<<<<<<<<<<<<<<<<<<<<${db}`))
+  .catch((er) => console.log(`>>>>>>>>>>>>>>>>>>>>FAILED TO CREATE DATABASE<<<<<<<<<<<<<<<<<<<<${er}`));
 Model.knex(kn);
 

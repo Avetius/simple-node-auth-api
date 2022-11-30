@@ -11,6 +11,7 @@ COPY . .
 
 # run npm install in our local machine
 RUN npm install
+# RUN npm install knex
 
 # the command that starts our app
-CMD ["node", "index.js"]
+CMD ["npm", "start"]
