@@ -9,16 +9,19 @@ import knex from '../base';
 
 export default class UserController {
   static login(req, res) {
-    console.log('bolyolyo login');
-    return response(res, req.user);
+    try {
+      return response(res, req.user);
+    } catch {
+      return response(res, req.user);
+    }
   }
 
   static facebookCB(req, res) {
-    console.log('req.profile > ', req.profile);
-    console.log('req.user > ', req.user);
-    console.log('req.query > ', req.query);
-    console.log('req.params > ', req.params);
-    return response(res, { message: 'ok' });
+    try {
+      return response(res, { message: 'ok' });
+    } catch {
+      return response(res, req.user);
+    }
   }
 
   static async signup(req, res) {
