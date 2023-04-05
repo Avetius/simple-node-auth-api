@@ -7,6 +7,7 @@ export const login_display_fields = [
   'verified_email',
   'created_at',
 ];
+
 export const login_fields = [
   ...login_display_fields,
   'password',
